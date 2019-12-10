@@ -7,9 +7,20 @@ class LoginController extends ResourceController {
 
   final HTMLRenderer htmlRenderer;
 
+  @override
+  List<ContentType> acceptedContentTypes = [
+    ContentType("application", "x-www-form-urlencoded"),
+    ContentType("application", "json")
+  ];
+
   @Operation.get()
   Future<Response> displayLoginForm() async {
-    return await htmlRenderer
-        .respondHTML("web/login.html");
+    return await htmlRenderer.respondHTML("web/login.html");
+  }
+
+  @Operation.post()
+  Future<Response> login() async {
+    return Response.ok("<html lang='en'><bod>Success post</bod></html>")
+      ..contentType = ContentType.html;
   }
 }
