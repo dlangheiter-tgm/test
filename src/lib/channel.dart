@@ -1,10 +1,16 @@
+import 'package:src/controllers/login_controller.dart';
+
 import 'src.dart';
+
+import 'utility/html_template.dart';
 
 /// This type initializes an application.
 ///
 /// Override methods in this class to set up routes and initialize services like
 /// database connections. See http://aqueduct.io/docs/http/channel/.
 class SrcChannel extends ApplicationChannel {
+  final HTMLRenderer htmlRenderer = HTMLRenderer();
+
   /// Initialize services in this method.
   ///
   /// Implement this method to initialize services, read values from [options]
@@ -13,7 +19,8 @@ class SrcChannel extends ApplicationChannel {
   /// This method is invoked prior to [entryPoint] being accessed.
   @override
   Future prepare() async {
-    logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
+    logger.onRecord.listen(
+        (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
   }
 
   /// Construct the request channel.
@@ -28,11 +35,11 @@ class SrcChannel extends ApplicationChannel {
 
     // Prefer to use `link` instead of `linkFunction`.
     // See: https://aqueduct.io/docs/http/request_controller/
-    router
-      .route("/example")
-      .linkFunction((request) async {
-        return Response.ok({"key": "value"});
-      });
+    router.route("/example").linkFunction((request) async {
+      return Response.ok({"key": "value"});
+    });
+
+    router.route("/login").link(() => LoginController(htmlRenderer: htmlRenderer));
 
     return router;
   }
