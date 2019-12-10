@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:src/src.dart';
+
 class HTMLRenderer {
   final Map<String, String> _cache = {};
 
@@ -12,6 +14,10 @@ class HTMLRenderer {
       final key = match.group(1);
       return templateVariables[key] ?? "null";
     });
+  }
+
+  Future<Response> respondHTML(String path, Map<String, String> templateVariables) async {
+    return Response.ok(await renderHTML(path, templateVariables))..contentType = ContentType.html;
   }
 
   Future<String> _loadHTMLTemplate(String path) async {
