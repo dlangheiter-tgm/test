@@ -10,6 +10,6 @@ class LoginController extends ResourceController {
   @Operation.get()
   Future<Response> displayLoginForm() async {
     return await htmlRenderer
-        .respondHTML("web/login.html", {"path": "/register"});
+        .respondHTML("web/login.html");
   }
 }

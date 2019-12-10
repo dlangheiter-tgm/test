@@ -6,8 +6,8 @@ import 'package:src/src.dart';
 class HTMLRenderer {
   final Map<String, String> _cache = {};
 
-  Future<String> renderHTML(
-      String path, Map<String, String> templateVariables) async {
+  Future<String> renderHTML(String path,
+      [Map<String, String> templateVariables = const {}]) async {
     final template = await _loadHTMLTemplate(path);
 
     return template.replaceAllMapped(RegExp("{{([a-zA-Z_]+)}}"), (match) {
@@ -16,8 +16,10 @@ class HTMLRenderer {
     });
   }
 
-  Future<Response> respondHTML(String path, Map<String, String> templateVariables) async {
-    return Response.ok(await renderHTML(path, templateVariables))..contentType = ContentType.html;
+  Future<Response> respondHTML(String path,
+      [Map<String, String> templateVariables = const {}]) async {
+    return Response.ok(await renderHTML(path, templateVariables))
+      ..contentType = ContentType.html;
   }
 
   Future<String> _loadHTMLTemplate(String path) async {
