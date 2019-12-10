@@ -20,7 +20,6 @@ class LoginController extends ResourceController {
 
   @Operation.post()
   Future<Response> login() async {
-    return Response.ok("<html lang='en'><bod>Success post</bod></html>")
-      ..contentType = ContentType.html;
+    return await htmlRenderer.respondHTML("web/loggedIn.html", {"name": "Testing"});
   }
 }
