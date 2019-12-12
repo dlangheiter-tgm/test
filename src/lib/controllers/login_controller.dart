@@ -21,6 +21,10 @@ class LoginController extends ResourceController {
 
   @Operation.post()
   Future<Response> login(@Bind.body() Login login) async {
-    return await htmlRenderer.respondHTML("web/loggedIn.html", {"name": "Testing"});
+    if(login.mail == "t@t" && login.password == "t") {
+      return await htmlRenderer.respondHTML("web/loggedIn.html", {"name": "Testing"});
+    } else {
+      return redirect("/wrong.html");
+    }
   }
 }
