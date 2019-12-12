@@ -1,3 +1,4 @@
+import 'package:src/config/application_config.dart';
 import 'package:src/controllers/login_controller.dart';
 
 import 'src.dart';
@@ -10,6 +11,7 @@ import 'utility/html_template.dart';
 /// database connections. See http://aqueduct.io/docs/http/channel/.
 class SrcChannel extends ApplicationChannel {
   final HTMLRenderer htmlRenderer = HTMLRenderer();
+  ApplicationConfiguration conf;
 
   /// Initialize services in this method.
   ///
@@ -21,6 +23,8 @@ class SrcChannel extends ApplicationChannel {
   Future prepare() async {
     logger.onRecord.listen(
         (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
+
+    conf = ApplicationConfiguration(options.configurationFilePath);
   }
 
   /// Construct the request channel.
@@ -39,7 +43,15 @@ class SrcChannel extends ApplicationChannel {
       return Response.ok({"key": "value"});
     });
 
-    router.route("/login").link(() => LoginController(htmlRenderer: htmlRenderer));
+    router
+        .route("/login")
+        .link(() => LoginController(htmlRenderer: htmlRenderer));
+
+    final policy = conf.server.caching
+        ? CachePolicy(expirationFromNow: Duration(hours: 12))
+        : null;
+    router.route("/*").link(
+        () => FileController("public/")..addCachePolicy(policy, (_) => true));
 
     return router;
   }
