@@ -1,6 +1,7 @@
 server:
   port: 8888
   processors: 1
+  caching: false
 
 database:
   path: ./users.db
