@@ -3,6 +3,7 @@ import 'package:sembast/sembast_io.dart';
 import 'package:src/config/application_config.dart';
 import 'package:src/controllers/login_controller.dart';
 
+import 'controllers/register_controller.dart';
 import 'model/user.dart';
 import 'src.dart';
 
@@ -51,6 +52,9 @@ class SrcChannel extends ApplicationChannel {
 
     router.route("/login").link(() =>
         LoginController(htmlRenderer: htmlRenderer, db: db, users: users));
+
+    router.route("/register").link(() =>
+        RegisterController(htmlRenderer: htmlRenderer, db: db, users: users));
 
     final policy = conf.server.caching
         ? CachePolicy(expirationFromNow: Duration(hours: 12))
