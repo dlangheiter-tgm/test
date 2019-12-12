@@ -10,4 +10,8 @@ class ServerConfig extends Configuration {
   /// 0 uses all cores. Negative numbers use all cores minus the number (-1 => 7 cores on a 8 core machine)
   int processors;
 
+  /// If html files should be cached. Preferable on deployment. Defaults to true
+  @optionalConfiguration
+  bool caching = true;
+
 }
