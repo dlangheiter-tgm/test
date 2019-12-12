@@ -9,7 +9,7 @@ import 'src.dart';
 import 'utility/html_template.dart';
 
 class SrcChannel extends ApplicationChannel {
-  final HTMLRenderer htmlRenderer = HTMLRenderer();
+  HTMLRenderer htmlRenderer;
   ApplicationConfiguration conf;
 
   Database db;
@@ -21,6 +21,8 @@ class SrcChannel extends ApplicationChannel {
         (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
 
     conf = ApplicationConfiguration(options.configurationFilePath);
+
+    htmlRenderer = HTMLRenderer(cacheEnabled: conf.server.caching);
 
     users = stringMapStoreFactory.store("users");
 

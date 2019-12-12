@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:src/src.dart';
 
 class HTMLRenderer {
+  HTMLRenderer({this.cacheEnabled = true});
+
+  final bool cacheEnabled;
   final Map<String, String> _cache = {};
 
   Future<String> renderHTML(String path,
@@ -28,7 +31,9 @@ class HTMLRenderer {
       try {
         final file = File(path);
         contents = file.readAsStringSync();
-        _cache[path] = contents;
+        if(cacheEnabled) {
+          _cache[path] = contents;
+        }
       } catch (_) {}
     }
 
