@@ -21,6 +21,7 @@ Future main(List<String> args) async {
   final app = Application<SrcChannel>();
 
   app.options.configurationFilePath = confs[results['mode']];
+  app.options.context['mode'] = results['mode'];
 
   final conf = ApplicationConfiguration(app.options.configurationFilePath);
 

@@ -1,44 +1,48 @@
+import 'package:sembast/sembast.dart';
+import 'package:sembast/sembast_io.dart';
 import 'package:src/config/application_config.dart';
 import 'package:src/controllers/login_controller.dart';
 
+import 'model/user.dart';
 import 'src.dart';
 
 import 'utility/html_template.dart';
 
-/// This type initializes an application.
-///
-/// Override methods in this class to set up routes and initialize services like
-/// database connections. See http://aqueduct.io/docs/http/channel/.
 class SrcChannel extends ApplicationChannel {
   final HTMLRenderer htmlRenderer = HTMLRenderer();
   ApplicationConfiguration conf;
 
-  /// Initialize services in this method.
-  ///
-  /// Implement this method to initialize services, read values from [options]
-  /// and any other initialization required before constructing [entryPoint].
-  ///
-  /// This method is invoked prior to [entryPoint] being accessed.
+  Database db;
+  StoreRef users;
+
   @override
   Future prepare() async {
     logger.onRecord.listen(
         (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
 
     conf = ApplicationConfiguration(options.configurationFilePath);
+
+    users = stringMapStoreFactory.store("users");
+
+    final DatabaseFactory dbFactory = createDatabaseFactoryIo();
+    db = await dbFactory.openDatabase(conf.database.path, version: 1,
+        onVersionChanged: (db, oldVersion, newVersion) async {
+      // If the db does not exist, create some data, or when in testing/development mode
+      if (oldVersion == 0 ||
+          options.context['mode'] == 'test' ||
+          options.context['mode'] == 'development') {
+        print("No database found. Prefiling test data");
+        await users.delete(db);
+        await users.add(
+            db, User(name: "Test account", mail: "t@t", password: "t").asMap());
+      }
+    });
   }
 
-  /// Construct the request channel.
-  ///
-  /// Return an instance of some [Controller] that will be the initial receiver
-  /// of all [Request]s.
-  ///
-  /// This method is invoked after [prepare].
   @override
   Controller get entryPoint {
     final router = Router();
 
-    // Prefer to use `link` instead of `linkFunction`.
-    // See: https://aqueduct.io/docs/http/request_controller/
     router.route("/example").linkFunction((request) async {
       return Response.ok({"key": "value"});
     });
