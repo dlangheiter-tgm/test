@@ -1,7 +1,7 @@
 import 'package:src/src.dart';
 
 class Register extends Serializable {
-  Register(this.name, this.mail, this.password);
+  Register({this.name, this.mail, this.password});
 
   String name;
   String mail;
