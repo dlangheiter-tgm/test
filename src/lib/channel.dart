@@ -47,9 +47,8 @@ class SrcChannel extends ApplicationChannel {
       return Response.ok({"key": "value"});
     });
 
-    router
-        .route("/login")
-        .link(() => LoginController(htmlRenderer: htmlRenderer));
+    router.route("/login").link(() =>
+        LoginController(htmlRenderer: htmlRenderer, db: db, users: users));
 
     final policy = conf.server.caching
         ? CachePolicy(expirationFromNow: Duration(hours: 12))

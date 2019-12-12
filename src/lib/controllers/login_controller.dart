@@ -4,9 +4,12 @@ import 'package:meta/meta.dart';
 import 'package:src/utility/html_template.dart';
 
 class LoginController extends ResourceController {
-  LoginController({@required this.htmlRenderer});
+  LoginController(
+      {@required this.htmlRenderer, @required this.db, @required this.users});
 
   final HTMLRenderer htmlRenderer;
+  final Database db;
+  final StoreRef users;
 
   @override
   List<ContentType> acceptedContentTypes = [
@@ -21,10 +24,18 @@ class LoginController extends ResourceController {
 
   @Operation.post()
   Future<Response> login(@Bind.body() Login login) async {
-    if(login.mail == "t@t" && login.password == "t") {
-      return await htmlRenderer.respondHTML("web/loggedIn.html", {"name": "Testing"});
-    } else {
+    final result = await users.findFirst(db,
+        finder: Finder(
+            filter: Filter.and([
+          Filter.equals("mail", login.mail),
+          Filter.equals("password", login.password),
+        ])));
+
+    if (result == null) {
       return redirect("/wrong.html");
     }
+
+    return await htmlRenderer
+        .respondHTML("web/loggedIn.html", {"name": result['name'] as String});
   }
 }
