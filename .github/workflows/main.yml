@@ -11,7 +11,6 @@ jobs:
     - name: repo-sync
       uses: wei/git-sync@v1
       env:
-        DESTINATION_REPO: "dlangheiter-tgm/test"
         SSH_PRIVATE_KEY: ${{ secrets.TGM_PRIV_KEY }}
       with:
-        args: $GITHUB_REPOSITORY $GITHUB_BRANCH $DESTINATION_REPO $GITHUB_BRANCH
+        args: $GITHUB_REPOSITORY $GITHUB_BRANCH "dlangheiter-tgm/test" $GITHUB_BRANCH
