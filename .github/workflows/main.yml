@@ -8,10 +8,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout current
-        uses: actions/checkout@master
-      - name: Push to test
-        uses: ad-m/github-push-action@v0.5.0
-        with:
-          repository: dlangheiter-tgm/test
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: repo-sync
+      uses: wei/git-sync@v1
+      env:
+        SOURCE_REPO: ${{ GITHUB_REPOSITORY }}
+        SOURCE_BRANCH: ${{ GITHUB_BRANCH }}
+        DESTINATION_REPO: "dlangheiter-tgm/test"
+        DESTINATION_BRANCH: ${{ GITHUB_BRANCH }}
+        SSH_PRIVATE_KEY: ${{ secrets.TGM_PRIV_KEY }}
+      with:
+        args: $SOURCE_REPO $SOURCE_BRANCH $DESTINATION_REPO $DESTINATION_BRANCH
