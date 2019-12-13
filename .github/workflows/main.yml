@@ -9,7 +9,7 @@ jobs:
 
     steps:
     - name: repo-sync
-      uses: dlangheiter-tgm/git-sync@v2.0.0-alpha
+      uses: dlangheiter-tgm/git-sync@v2.0.1-alpha
       with:
         destination-repo: 'dlangheiter-tgm/test'
         ssh_private_key: ${{ secrets.TGM_PRIV_KEY }}
