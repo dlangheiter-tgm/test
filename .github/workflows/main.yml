@@ -13,4 +13,4 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.TGM_PRIV_KEY }}
       with:
-        args: $GITHUB_REPOSITORY $GITHUB_BRANCH "dlangheiter-tgm/test" $GITHUB_BRANCH
+        args: "$GITHUB_REPOSITORY $GITHUB_BRANCH 'dlangheiter-tgm/test' $GITHUB_BRANCH"
