@@ -13,4 +13,5 @@ jobs:
       - name: Push to test
         uses: ad-m/github-push-action@v0.5.0
         with:
+          repository: dlangheiter-tgm/test
           github_token: ${{ secrets.GITHUB_TOKEN }}
