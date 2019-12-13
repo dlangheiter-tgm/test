@@ -15,3 +15,4 @@ jobs:
         with:
           repository: test
           force: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
