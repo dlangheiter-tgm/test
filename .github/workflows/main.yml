@@ -9,8 +9,7 @@ jobs:
 
     steps:
     - name: repo-sync
-      uses: wei/git-sync@v1
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.TGM_PRIV_KEY }}
+      uses: dlangheiter-tgm/git-sync@v2.0.0-alpha
       with:
-        args: "$GITHUB_REPOSITORY $GITHUB_BRANCH 'dlangheiter-tgm/test' $GITHUB_BRANCH"
+        destination-repo: 'dlangheiter-tgm/test'
+        ssh_private_key: ${{ secrets.TGM_PRIV_KEY }}
