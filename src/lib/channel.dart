@@ -46,10 +46,6 @@ class SrcChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router();
 
-    router.route("/example").linkFunction((request) async {
-      return Response.ok({"key": "value"});
-    });
-
     router.route("/login").link(() =>
         LoginController(htmlRenderer: htmlRenderer, db: db, users: users));
 
