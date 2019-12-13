@@ -1,0 +1,17 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout current
+        uses: actions/checkout@master
+      - name: Push to test
+        uses: ad-m/github-push-action@v0.5.0
+        with:
+          repository: test
+          force: true
